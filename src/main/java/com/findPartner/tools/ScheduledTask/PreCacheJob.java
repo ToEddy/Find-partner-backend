@@ -1,5 +1,6 @@
 package com.findPartner.tools.ScheduledTask;
 
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.findPartner.domain.entity.User;
@@ -7,7 +8,7 @@ import com.findPartner.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +31,7 @@ public class PreCacheJob {
     @Resource
     private UserService userService;
     @Resource
-    private RedisTemplate redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
     @Resource
     private RedissonClient redissonClient;
     private List<Long> mainUserList = List.of(1L);
@@ -47,7 +48,7 @@ public class PreCacheJob {
                     Page<User> userPage = userService.page(new Page<>(1, 10), queryWrapper);
                     //写缓存
                     try {
-                        redisTemplate.opsForValue().set(USER_RECOMMEND_PAGE + aLong, userPage, 100, TimeUnit.SECONDS);
+                        stringRedisTemplate.opsForValue().set(USER_RECOMMEND_PAGE + aLong, JSONUtil.toJsonStr(userPage), 100, TimeUnit.SECONDS);
                     } catch (Exception e) {
                         log.error("写入缓存失败", e);
                     }

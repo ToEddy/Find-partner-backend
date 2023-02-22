@@ -51,7 +51,7 @@ create table team
     expireTime  datetime null comment '过期时间',
     userId      bigint comment '用户id',
     status      int      default 0 not null comment '0 - 公开，1 - 私有，2 - 加密',
-    password    varchar(512) null comment '密码',
+    password    varchar(512)       null comment '密码',
 
     createTime  datetime default CURRENT_TIMESTAMP null comment '创建时间',
     updateTime  datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
@@ -59,7 +59,8 @@ create table team
 ) comment '队伍';
 
 -- 当数据库id 的自增值已经产生脱节的时候，我们可以设置起始值
-alter table user AUTO_INCREMENT=1;
+alter table user
+    AUTO_INCREMENT = 5;
 
 update user
 set username  = ?,
