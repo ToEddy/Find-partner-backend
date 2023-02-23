@@ -62,4 +62,31 @@ class FindPartnerBackendApplicationTests {
         stopWatch.stop();
         System.out.println(stopWatch.getTotalTimeMillis());
     }
+
+    @Test
+    void testThread() throws ExecutionException, InterruptedException {
+        CompletableFuture<Void> runAsync = CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("runAsync执行了");
+            }
+        });
+
+        CompletableFuture<String> supplyAsync = CompletableFuture.supplyAsync(() -> "supplyAsync");
+        CompletableFuture.allOf(runAsync, supplyAsync).join();
+    }
+
+    @Test
+    void testThread2() throws ExecutionException, InterruptedException {
+        CompletableFuture<Void> runAsync = CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("runAsync执行了");
+            }
+        });
+        runAsync.get();
+        CompletableFuture<String> supplyAsync = CompletableFuture.supplyAsync(() -> "supplAsync执行了");
+        System.out.println(supplyAsync.get());
+        System.out.println(CompletableFuture.anyOf(runAsync, supplyAsync));
+    }
 }

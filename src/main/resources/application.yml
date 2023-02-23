@@ -28,12 +28,6 @@ spring:
     password: 1123hy...
     database: 0
 #腾讯cos 存储
-tencent:
-  cos:
-    secretId: AKIDvgFam4A1eFmyxlMm6E7l9LK5aryqQmwu
-    secretKey: qSr43lHdkqjPtBFG8nGVYebP4XmnZGrE
-    region: ap-nanjing
-    bucket: code-make-1311874745
 
 mybatis-plus:
   configuration:
